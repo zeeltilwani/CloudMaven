@@ -8,7 +8,7 @@ on:
 
 jobs:
   call-workflow:
-    uses: zeeltilwani/cicd-workflows/.github/workflows/docker-ci.yml@v1.0.0
+    uses: zeeltilwani/cicd-workflows/.github/workflows/docker-ci.yml@v1.2.0
 
     with:
       image_name: zeeltilwani/cloudmaven

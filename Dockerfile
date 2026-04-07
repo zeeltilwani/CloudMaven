@@ -18,3 +18,6 @@ COPY --from=builder /app .
 EXPOSE 3000
 
 CMD ["node", "app.js"]
+
+FROM nginx:alpine
+COPY . /usr/share/nginx/html

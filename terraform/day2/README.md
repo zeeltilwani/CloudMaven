@@ -122,7 +122,7 @@ sensitive = true
 Screenshots for all tasks are available inside:
 
 
-day2/screenshots
+terraform/day2/screenshots
 
 
 ---

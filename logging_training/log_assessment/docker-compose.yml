@@ -1,0 +1,55 @@
+services:
+
+  app:
+    build: ./app
+    container_name: log-app
+
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+  #   environment:
+  #     - discovery.type=single-node
+  #   ports:
+  #     - "9200:9200"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    environment:
+    - discovery.type=single-node
+    - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+       - "9200:9200"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.17.0
+    volumes:
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5044:5044"
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.0
+    user: root
+    command: ["--strict.perms=false"]
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./app:/app
+    depends_on:
+      - logstash
+
+  # filebeat:
+  # image: docker.elastic.co/beats/filebeat:7.17.0
+  # user: root
+  # command: ["--strict.perms=false"]
+  # volumes:
+  #   - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+  #   - ./app:/app
+  # depends_on:
+  #   - logstash

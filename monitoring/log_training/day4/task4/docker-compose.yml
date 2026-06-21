@@ -1,0 +1,22 @@
+services:
+  app:
+    build: ../task2/app
+    ports:
+      - "5000:5000"
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ../task3/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  node_exporter:
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
